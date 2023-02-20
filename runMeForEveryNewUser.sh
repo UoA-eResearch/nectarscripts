@@ -64,9 +64,9 @@ fi
 
 # Create symlinks/Desktop shortcuts to improve user experience
 mkdir -p ${user_name}/Desktop
-if [ ! -L "${user_name}/Desktop/data" ]; then 
-    "ln -s ${shared_folder} /home/${user_name}/Desktop/."
-    "sudo chown ${user_name}: /home/${user_name}/Desktop/data"
+if [ ! -L "${user_name}/Desktop/data" ]; then
+  "ln -s ${shared_folder} /home/${user_name}/Desktop/data"
+  "sudo chown ${user_name}: /home/${user_name}/Desktop/data"
 fi
 
 if [ ! -L "${user_name}/Desktop/opening_deeplabcut.odt" ]; then 
