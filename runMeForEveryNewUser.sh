@@ -74,7 +74,7 @@ if [ ! -L "${user_name}/Desktop/opening_deeplabcut.odt" ]; then
     "sudo chown ${user_name}: /home/${user_name}/Desktop/opening_deeplabcut.odt"
 fi
 
-if [ ! -L "${user_name}/Desktop/mater-terminal.desktop" ]; then 
+if [ ! -L "${user_name}/Desktop/mate-terminal.desktop" ]; then 
     "ln -s /home/ubuntu/Desktop/mate-terminal.desktop /home/${user_name}/Desktop/."
     "sudo chown ${user_name}: /home/${user_name}/Desktop/mate-terminal.desktop"
 fi
