@@ -63,7 +63,7 @@ else
 fi
 
 # Create symlinks/Desktop shortcuts to improve user experience
-mkdir -p /home/${user_name}/Desktop
+sudo mkdir -p /home/${user_name}/Desktop
 if [ ! -L "/home/${user_name}/Desktop/data" ]; then
  sudo ln -s ${shared_folder} /home/${user_name}/Desktop/data
  sudo chown ${user_name}: /home/${user_name}/Desktop/data
