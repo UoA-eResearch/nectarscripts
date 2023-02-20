@@ -4,13 +4,12 @@ TO BE RUN ONLY ONCE
 
 # Name of the group everybody is in
 group_name='research'
-group_id='1003'
 shared_folder='/mnt/'
 
 # Create group ${group_name} if it does not already exists
 if [ ! $(getent group "${group_name}") ]; then
     echo "Group ${group_name} does not yet exist. Creating..."
-    sudo groupadd -g ${group_id} ${group_name}
+    sudo groupadd ${group_name}
 fi
 
 # Create shared folder if it does not exist yet
