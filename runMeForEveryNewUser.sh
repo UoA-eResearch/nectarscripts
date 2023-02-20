@@ -71,10 +71,8 @@ fi
 
 tmp_files="opening_deeplabcut.odt mate-terminal.desktop"
 for f in ${tmp_files}; do
- if [ ! -L "/home/${user_name}/Desktop/${f}" ]; then 
-   ln -s /home/ubuntu/Desktop/${f} /home/${user_name}/Desktop/${f}
-   sudo chown ${user_name}: /home/${user_name}/Desktop/${f}
- fi
+  sudo ln -s /home/ubuntu/Desktop/${f} /home/${user_name}/Desktop/${f}
+  sudo chown ${user_name}: /home/${user_name}/Desktop/${f}
 done
 
 # Copy shared Python environment to user's local file
