@@ -69,15 +69,13 @@ if [ ! -L "/home/${user_name}/Desktop/data" ]; then
   "sudo chown ${user_name}: /home/${user_name}/Desktop/data"
 fi
 
-if [ ! -L "/home/${user_name}/Desktop/opening_deeplabcut.odt" ]; then 
-    "ln -s /home/ubuntu/Desktop/opening_deeplabcut.odt /home/${user_name}/Desktop/."
-    "sudo chown ${user_name}: /home/${user_name}/Desktop/opening_deeplabcut.odt"
-fi
-
-if [ ! -L "/home/${user_name}/Desktop/mate-terminal.desktop" ]; then 
-    "ln -s /home/ubuntu/Desktop/mate-terminal.desktop /home/${user_name}/Desktop/."
-    "sudo chown ${user_name}: /home/${user_name}/Desktop/mate-terminal.desktop"
-fi
+tmp_files="opening_deeplabcut.odt mate-terminal.desktop"
+for f in ${tmp_files}; do
+ if [ ! -L "/home/${user_name}/Desktop/${f}" ]; then 
+   ln -s /home/ubuntu/Desktop/${f} /home/${user_name}/Desktop/${f}
+   sudo chown ${user_name}: /home/${user_name}/Desktop/${f}
+ fi
+done
 
 # Copy shared Python environment to user's local file
 if [ -f /home/ubuntu/.bashrc ]; then
