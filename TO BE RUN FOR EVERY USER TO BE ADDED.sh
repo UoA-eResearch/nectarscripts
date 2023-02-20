@@ -39,13 +39,10 @@ else
     exit 1
 fi
 
-# Create group if it does not already exists
-# ASK: WHAT GROUP
-if [ $(getent group "${group_name}") ]; then
-    echo "Group ${group_name} already exists."
-else
-    echo "Group ${group_name} does not yet exist. Creating..."
-    sudo groupadd ${group_name}
+# Verify group ${group_name} already exists. Exit if group doesn't exist
+if [ ! $(getent group "${group_name}") ]; then
+    echo "Group ${group_name} does not yet exist. Needs to be created first. Exiting"
+    exit 1
 fi
 
 # Create user if it does not already exists
@@ -65,21 +62,6 @@ else
     echo "${user_name}  ALL=(ALL) NOPASSWD: ALL" | sudo tee --append /etc/sudoers
 fi
 
-# Create shared folder if it does not exist yet
-# ASK: Probably not needed if the other script has been executed once?
-if [ ! -d ${shared_folder} ]; then
- sudo mkdir ${shared_folder}
-fi
-
-# install dependency package
-# ASK: DO WE NEED TO CUT-PASTE THAT TO THE RUN ONLY ONCE SCRIPT
-sudo dpkg -l acl > /dev/null
-if [ "$?" -gt "0" ]; then
-    sudo apt-get install acl
-fi
-
-
-
 # Create symlinks/Desktop shortcuts to improve user experience
 if [ ! -L "${user_name}/Desktop/data" ]; then 
     "ln -s ${shared_folder} /home/${user_name}/Desktop/."
@@ -98,7 +80,5 @@ fi
 
 
 # Copy shared Python environment to user's local file
-# ASK: IS THIS ONLY FOR TESTING PURPOSED THAT WE HARDCODED LMCN644 INTO THIS? 
-# ASK: We should probably replace lmcn644 with ubuntu because we installed the python env for him?
-sudo cp /home/lmcn644/.bashrc /home/${user_name}/Desktop/.bashrc
-sudo cp /home/lmcn644/.bash_profile /home/${user_name}/Desktop/.bash_profile
+sudo cp /home/ubuntu/.bashrc /home/${user_name}/Desktop/.bashrc
+sudo cp /home/ubuntu/.bash_profile /home/${user_name}/Desktop/.bash_profile
