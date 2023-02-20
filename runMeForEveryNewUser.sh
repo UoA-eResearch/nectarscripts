@@ -76,10 +76,10 @@ for f in ${tmp_files}; do
 done
 
 # Copy shared Python environment to user's local file
-if [ -f /home/ubuntu/.bashrc ]; then
-    sudo cp /home/ubuntu/.bashrc /home/${user_name}/.bashrc
-fi
-if [ -f /home/ubuntu/.bash_profile ]; then
-    sudo cp /home/ubuntu/.bash_profile /home/${user_name}/.bash_profile
-fi
-
+tmp_files=".bashrc .bash_profile"
+for f in ${tmp_files}; do
+    if [ -f ${f} ]; then
+        sudo cp /home/ubuntu/${f} /home/${user_name}/${f}
+        sudo chown ${user_name}: /home/${user_name}/${f}
+    fi
+done
