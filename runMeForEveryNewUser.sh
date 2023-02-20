@@ -79,7 +79,11 @@ if [ ! -L "${user_name}/Desktop/mater-terminal.desktop" ]; then
     "sudo chown ${user_name}: /home/${user_name}/Desktop/mate-terminal.desktop"
 fi
 
-
 # Copy shared Python environment to user's local file
-sudo cp /home/ubuntu/.bashrc /home/${user_name}/Desktop/.bashrc
-sudo cp /home/ubuntu/.bash_profile /home/${user_name}/Desktop/.bash_profile
+if [ -f /home/ubuntu/.bashrc ]; then
+    sudo cp /home/ubuntu/.bashrc /home/${user_name}/.bashrc
+fi
+if [ -f /home/ubuntu/.bash_profile ]; then
+    sudo cp /home/ubuntu/.bash_profile /home/${user_name}/.bash_profile
+fi
+
