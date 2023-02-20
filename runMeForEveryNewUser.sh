@@ -64,17 +64,17 @@ fi
 
 # Create symlinks/Desktop shortcuts to improve user experience
 mkdir -p ${user_name}/Desktop
-if [ ! -L "${user_name}/Desktop/data" ]; then
+if [ ! -L "/home/${user_name}/Desktop/data" ]; then
   "ln -s ${shared_folder} /home/${user_name}/Desktop/data"
   "sudo chown ${user_name}: /home/${user_name}/Desktop/data"
 fi
 
-if [ ! -L "${user_name}/Desktop/opening_deeplabcut.odt" ]; then 
+if [ ! -L "/home/${user_name}/Desktop/opening_deeplabcut.odt" ]; then 
     "ln -s /home/ubuntu/Desktop/opening_deeplabcut.odt /home/${user_name}/Desktop/."
     "sudo chown ${user_name}: /home/${user_name}/Desktop/opening_deeplabcut.odt"
 fi
 
-if [ ! -L "${user_name}/Desktop/mate-terminal.desktop" ]; then 
+if [ ! -L "/home/${user_name}/Desktop/mate-terminal.desktop" ]; then 
     "ln -s /home/ubuntu/Desktop/mate-terminal.desktop /home/${user_name}/Desktop/."
     "sudo chown ${user_name}: /home/${user_name}/Desktop/mate-terminal.desktop"
 fi
