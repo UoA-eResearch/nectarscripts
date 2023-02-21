@@ -47,50 +47,52 @@ if [ ! $(getent group "${group_name}") ]; then
     exit 1
 fi
 
-echo "Group creation successful"
-
 # Create user if it does not already exists
 if [ $(getent passwd "${user_name}") ]; then
     echo "User ${user_name} already exists."
 else
     echo "User ${user_name} does not yet already. Creating..."
-    sudo useradd --base-dir /home --shell /bin/bash ${user_name}
+    useradd --base-dir /home --shell /bin/bash ${user_name}
     authz_key_file="/home/${user_name}/.ssh/authorized_keys"
-    sudo mkdir -p /home/${user_name}/.ssh
-    sudo touch ${authz_key_file}
-    cat "${pub_ssh_key_file}" | sudo tee --append ${authz_key_file}
-    sudo chmod 600 ${authz_key_file}
-    sudo chmod 700 /home/${user_name}
-    sudo chown -R ${user_name}: /home/${user_name}
-    sudo usermod -a -G ${group_name} ${user_name}
-    echo "${user_name}  ALL=(ALL) NOPASSWD: ALL" | sudo tee --append /etc/sudoers
+    mkdir -p /home/${user_name}/.ssh
+    touch ${authz_key_file}
+    cat "${pub_ssh_key_file}" | tee --append ${authz_key_file}
+    chmod 600 ${authz_key_file}
+    chmod 700 /home/${user_name}
+    chown -R ${user_name}: /home/${user_name}
+    usermod -a -G ${group_name} ${user_name}
+    echo "${user_name}  ALL=(ALL) NOPASSWD: ALL" | tee --append /etc/sudoers
 fi
 
 echo "User creation successful"
 
 # Create symlinks/Desktop shortcuts to improve user experience
-sudo mkdir -p /home/${user_name}/Desktop
+mkdir -p /home/${user_name}/Desktop
 if [ ! -L "/home/${user_name}/Desktop/data" ]; then
     echo "Linking ${shared_folder} to /home/${user_name}/Desktop/data"
-    sudo ln -s ${shared_folder} /home/${user_name}/Desktop/data
+    ln -s ${shared_folder} /home/${user_name}/Desktop/data
     echo "Changing ownership of /home/${user_name}/Desktop/data to ${user_name}"
-    sudo chown ${user_name}: /home/${user_name}/Desktop/data
+    chown ${user_name}: /home/${user_name}/Desktop/data
 fi
 
 tmp_files="opening_deeplabcut.odt mate-terminal.desktop"
 for f in ${tmp_files}; do
-    echo "Linking /home/ubuntu/Desktop/${f} to /home/${user_name}/Desktop/${f}"
-    sudo ln -s /home/ubuntu/Desktop/${f} /home/${user_name}/Desktop/${f}
-    echo "Changing ownership of /home/${user_name}/Desktop/${f} to  ${user_name}"
-    sudo chown ${user_name}: /home/${user_name}/Desktop/${f}
+    if [ ! -L "/home/${user_name}/Desktop/${f}" ]; then
+        echo "Linking /home/ubuntu/Desktop/${f} to /home/${user_name}/Desktop/${f}"
+        ln -s /home/ubuntu/Desktop/${f} /home/${user_name}/Desktop/${f}
+        echo "Changing ownership of /home/${user_name}/Desktop/${f} to ${user_name}"
+        chown ${user_name}: /home/${user_name}/Desktop/${f}
+    fi
 done
+
+chown -R ${user_name}: /home/${user_name}/Desktop
 
 # Copy shared Python environment to user's local file
 tmp_files=".bashrc .bash_profile"
 for f in ${tmp_files}; do
-    if [ -f ${f} ]; then
+    if [ -f /home/ubuntu/${f} ]; then
         echo "Copying /home/ubuntu/${f} to /home/${user_name}/${f}"
-        sudo cp /home/ubuntu/${f} /home/${user_name}/${f}
-        sudo chown ${user_name}: /home/${user_name}/${f}
+        cp /home/ubuntu/${f} /home/${user_name}/${f}
+        chown ${user_name}: /home/${user_name}/${f}
     fi
 done
