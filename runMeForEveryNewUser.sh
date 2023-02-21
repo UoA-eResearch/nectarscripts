@@ -71,27 +71,26 @@ echo "User creation successful"
 # Create symlinks/Desktop shortcuts to improve user experience
 sudo mkdir -p /home/${user_name}/Desktop
 if [ ! -L "/home/${user_name}/Desktop/data" ]; then
+    echo "Linking ${shared_folder} to /home/${user_name}/Desktop/data"
     sudo ln -s ${shared_folder} /home/${user_name}/Desktop/data
+    echo "Changing ownership of /home/${user_name}/Desktop/data to ${user_name}"
     sudo chown ${user_name}: /home/${user_name}/Desktop/data
 fi
 
-echo "Data folder symlink creation successful"
-
 tmp_files="opening_deeplabcut.odt mate-terminal.desktop"
 for f in ${tmp_files}; do
+    echo "Linking /home/ubuntu/Desktop/${f} to /home/${user_name}/Desktop/${f}"
     sudo ln -s /home/ubuntu/Desktop/${f} /home/${user_name}/Desktop/${f}
+    echo "Changing ownership of /home/${user_name}/Desktop/${f} to  ${user_name}"
     sudo chown ${user_name}: /home/${user_name}/Desktop/${f}
 done
-
-echo "Desktop link creation successful"
 
 # Copy shared Python environment to user's local file
 tmp_files=".bashrc .bash_profile"
 for f in ${tmp_files}; do
     if [ -f ${f} ]; then
+        echo "Copying /home/ubuntu/${f} to /home/${user_name}/${f}"
         sudo cp /home/ubuntu/${f} /home/${user_name}/${f}
         sudo chown ${user_name}: /home/${user_name}/${f}
     fi
 done
-
-echo "BashRC successfully copied"
