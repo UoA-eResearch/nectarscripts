@@ -39,11 +39,15 @@ else
     exit 1
 fi
 
+echo "all arguments are were successfully input"
+
 # Verify group ${group_name} already exists. Exit if group doesn't exist
 if [ ! $(getent group "${group_name}") ]; then
     echo "Group ${group_name} does not yet exist. Needs to be created first. Exiting"
     exit 1
 fi
+
+echo "Group creation successful"
 
 # Create user if it does not already exists
 if [ $(getent passwd "${user_name}") ]; then
@@ -62,6 +66,8 @@ else
     echo "${user_name}  ALL=(ALL) NOPASSWD: ALL" | sudo tee --append /etc/sudoers
 fi
 
+echo "User creation successful"
+
 # Create symlinks/Desktop shortcuts to improve user experience
 sudo mkdir -p /home/${user_name}/Desktop
 if [ ! -L "/home/${user_name}/Desktop/data" ]; then
@@ -69,11 +75,15 @@ if [ ! -L "/home/${user_name}/Desktop/data" ]; then
     sudo chown ${user_name}: /home/${user_name}/Desktop/data
 fi
 
+echo "Data folder symlink creation successful"
+
 tmp_files="opening_deeplabcut.odt mate-terminal.desktop"
 for f in ${tmp_files}; do
     sudo ln -s /home/ubuntu/Desktop/${f} /home/${user_name}/Desktop/${f}
     sudo chown ${user_name}: /home/${user_name}/Desktop/${f}
 done
+
+echo "Desktop link creation successful"
 
 # Copy shared Python environment to user's local file
 tmp_files=".bashrc .bash_profile"
@@ -83,3 +93,5 @@ for f in ${tmp_files}; do
         sudo chown ${user_name}: /home/${user_name}/${f}
     fi
 done
+
+echo "BashRC successfully copied"
